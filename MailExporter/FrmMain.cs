@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -40,7 +41,11 @@ namespace MailExporter
         private int _totalNum = 0;
         private int _recordNum = 0;
         private int _unitNum = 100;
+        private Guid _token = Guid.Empty;
         private bool _downloadAttachments = false;
+
+        private string _downloadNewVersionUrl = string.Empty;
+
         private string _iniFile = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, $"{Program.AppName}.ini");
         private string _root = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory), "我的邮件");
         public FrmMain()
@@ -302,6 +307,38 @@ namespace MailExporter
 
         }
 
+        private void Report(bool runNow = false)
+        {
+            try
+            {
+                var success = HttpHelper.Report(Application.ProductVersion,
+                    out var token, out var memberNo,
+                    out var newVersion, out var downloadUrl,
+                    out string error);
+                if (!success)
+                {
+                    WriteHistory(error);
+                }
+                else
+                {
+                    _token = token;
+                    if (new Version(Application.ProductVersion) < new Version(newVersion))
+                    {
+                        this.Text = $"{Program.AppTitle} 【{memberNo}】 有新版本！";
+                        _downloadNewVersionUrl = downloadUrl;
+                    }
+                    else
+                    {
+                        this.Text = $"{Program.AppTitle} 【{memberNo}】";
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex.ToString());
+            }
+        }
+
 
         #endregion
 
@@ -310,6 +347,7 @@ namespace MailExporter
 
         private void FrmMain_Load(object sender, EventArgs e)
         {
+            Report();
             txtTotalNum.Text = "0";
             txtExportNum.Text = "0";
             txtAttachmentNum.Text = "0";
@@ -393,6 +431,12 @@ namespace MailExporter
                         INIHelper.Write("iMap0", "port", txtImapPort.Text, _iniFile);
                         INIHelper.Write("iMap0", "email", txtEmail.Text, _iniFile);
                         INIHelper.Write("iMap0", "proxy", txtProxy.Text, _iniFile);
+
+                        _imapPassword = txtPassword.Text;
+                        _imapServer = txtImapServer.Text;
+                        _imapPort = int.Parse(txtImapPort.Text);
+                        _imapAccount = txtEmail.Text;
+
                         var inbox = client.Inbox;
                         inbox.Open(FolderAccess.ReadOnly);
                         txtTotalNum.Text = inbox.Count.ToString();
@@ -409,6 +453,7 @@ namespace MailExporter
                         txtExcelFile.Text = _excelFilename;
                         MessageBox.Show(@"登录成功！", Program.AppName, MessageBoxButtons.OK, MessageBoxIcon.Information);
                         btnStart.Enabled = true;
+                        btnTool.Enabled = true;
                     }
                     btnTest.Enabled = true;
                 }
@@ -524,15 +569,16 @@ namespace MailExporter
                                     if (i == pages)
                                     {
                                         pageEndIndex = inbox.Count - 1;
-                                    } else if (i == pages)
+                                    }
+                                    else if (i == pages)
                                     {
-                                        if (pageEndIndex > _totalNum-1)
+                                        if (pageEndIndex > _totalNum - 1)
                                         {
-                                            pageEndIndex = _totalNum-1;
+                                            pageEndIndex = _totalNum - 1;
                                         }
                                     }
 
-                                    if (pageEndIndex<pageStartIndex) break;
+                                    if (pageEndIndex < pageStartIndex) break;
 
                                     WriteHistory($"正在请求从{pageStartIndex}到{pageEndIndex}封邮件......");
 
@@ -641,7 +687,7 @@ namespace MailExporter
 
                                     var mailwithAttachmentsCount = dt2.Count(x => x.Field<string>("附件") != "0");
                                     progressBarMain.Maximum = mailwithAttachmentsCount;
-                                 
+
                                     foreach (var r in dt2.Where(x => x.Field<string>("附件") != "0"))
                                     {
                                         var id = int.Parse(r.ItemArray[0].ToString());
@@ -719,7 +765,7 @@ namespace MailExporter
                                     }
 
                                     _stopFlag = true;
-                                    isFinished=true;
+                                    isFinished = true;
                                 }
 
                                 #endregion
@@ -797,6 +843,28 @@ namespace MailExporter
             var mailBoxSetting = _mailboxSettings.FirstOrDefault(x => x.MailboxType.ToString() == select);
             txtImapServer.Text = mailBoxSetting.ImapServer;
             txtImapPort.Text = mailBoxSetting.ImapPort.ToString();
+        }
+
+        private void btnTool_Click(object sender, EventArgs e)
+        {
+            var form = new FrmUtility();
+            form.ImapServer = _imapServer;
+            form.ImapPort = _imapPort;
+            form.Password = _imapPassword;
+            form.Username = _imapAccount;
+
+            form.ProxyServer = _imapProxyServer;
+            form.ProxyPort = _imapProxyPort;
+
+            form.ShowDialog();
+        }
+
+        private void linkDownload_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            if (!string.IsNullOrEmpty(_downloadNewVersionUrl))
+            {
+                System.Diagnostics.Process.Start(_downloadNewVersionUrl);
+            }
         }
     }
 }

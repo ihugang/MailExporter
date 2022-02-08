@@ -22,6 +22,4 @@ Global
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {AB6A8ECF-7EF7-44FB-A938-EB9E1CD40F3B}
 	EndGlobalSection
-	GlobalSection(TeamFoundationVersionControl) = preSolution
-	EndGlobalSection
 EndGlobal

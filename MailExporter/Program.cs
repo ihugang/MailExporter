@@ -38,6 +38,8 @@ namespace MailExporter
         }
 
         public static string AppName = "MailExporter";
+        public static string AppTitle = "电子邮件导出Excel工具";
         public static string AppSlogan = "时间猎犬系列——电子邮件导出为Excel工具 Save your time!";
+        public static Guid ApplicationId = Guid.Parse("CCF5533F-B411-495D-9D09-EE71C59E9954");
     }
 }

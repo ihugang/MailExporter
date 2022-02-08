@@ -73,6 +73,7 @@
             this.btnPause = new Telerik.WinControls.UI.RadButton();
             this.btnExit = new Telerik.WinControls.UI.RadButton();
             this.btnTool = new Telerik.WinControls.UI.RadButton();
+            this.linkDownload = new System.Windows.Forms.LinkLabel();
             ((System.ComponentModel.ISupportInitialize)(this.radGroupBox1)).BeginInit();
             this.radGroupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.txtProxy)).BeginInit();
@@ -276,6 +277,7 @@
             // 
             // radPanel1
             // 
+            this.radPanel1.Controls.Add(this.linkDownload);
             this.radPanel1.Controls.Add(this.lblVersion);
             this.radPanel1.Controls.Add(this.lblInfo);
             this.radPanel1.Location = new System.Drawing.Point(13, 4);
@@ -521,6 +523,19 @@
             this.btnTool.TabIndex = 10;
             this.btnTool.Text = "IMAP工具";
             this.btnTool.ThemeName = "ControlDefault";
+            this.btnTool.Click += new System.EventHandler(this.btnTool_Click);
+            // 
+            // linkDownload
+            // 
+            this.linkDownload.AutoSize = true;
+            this.linkDownload.Location = new System.Drawing.Point(493, 18);
+            this.linkDownload.Name = "linkDownload";
+            this.linkDownload.Size = new System.Drawing.Size(46, 13);
+            this.linkDownload.TabIndex = 2;
+            this.linkDownload.TabStop = true;
+            this.linkDownload.Text = "新版本";
+            this.linkDownload.Visible = false;
+            this.linkDownload.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkDownload_LinkClicked);
             // 
             // FrmMain
             // 
@@ -632,5 +647,6 @@
         private Telerik.WinControls.UI.RadTextBoxControl txtProxy;
         private Telerik.WinControls.UI.RadLabel radLabel15;
         private Telerik.WinControls.UI.RadButton btnTool;
+        private System.Windows.Forms.LinkLabel linkDownload;
     }
 }
