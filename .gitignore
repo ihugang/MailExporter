@@ -3,6 +3,7 @@
 [Tt]humbs.db
 
 #Visual Studio Files
+.vs/
 lib
 [Pp]ackages
 [Oo]bj
