@@ -11,5 +11,7 @@ namespace MailExporter
         public int ImapPort { get; set; }
 
         public List<string> Domains { get; set; }
+
+        public string Tips { get; set; }
     }
 }

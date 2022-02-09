@@ -74,6 +74,10 @@
             this.btnExit = new Telerik.WinControls.UI.RadButton();
             this.btnTool = new Telerik.WinControls.UI.RadButton();
             this.linkDownload = new System.Windows.Forms.LinkLabel();
+            this.statusStripMain = new Telerik.WinControls.UI.RadStatusStrip();
+            this.radLabelElement1 = new Telerik.WinControls.UI.RadLabelElement();
+            this.radLabelElement2 = new Telerik.WinControls.UI.RadLabelElement();
+            this.radLabelElement3 = new Telerik.WinControls.UI.RadLabelElement();
             ((System.ComponentModel.ISupportInitialize)(this.radGroupBox1)).BeginInit();
             this.radGroupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.txtProxy)).BeginInit();
@@ -115,6 +119,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.btnPause)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnExit)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnTool)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.statusStripMain)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this)).BeginInit();
             this.SuspendLayout();
             // 
@@ -537,11 +542,51 @@
             this.linkDownload.Visible = false;
             this.linkDownload.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkDownload_LinkClicked);
             // 
+            // statusStripMain
+            // 
+            this.statusStripMain.Items.AddRange(new Telerik.WinControls.RadItem[] {
+            this.radLabelElement1,
+            this.radLabelElement2,
+            this.radLabelElement3});
+            this.statusStripMain.Location = new System.Drawing.Point(0, 469);
+            this.statusStripMain.Name = "statusStripMain";
+            this.statusStripMain.Size = new System.Drawing.Size(624, 26);
+            this.statusStripMain.TabIndex = 11;
+            this.statusStripMain.ThemeName = "ControlDefault";
+            // 
+            // radLabelElement1
+            // 
+            this.radLabelElement1.Name = "radLabelElement1";
+            this.statusStripMain.SetSpring(this.radLabelElement1, false);
+            this.radLabelElement1.Text = "技术支持微信:390652  电子邮件390652@qq.com";
+            this.radLabelElement1.TextWrap = true;
+            this.radLabelElement1.Click += new System.EventHandler(this.radLabelElement1_Click);
+            // 
+            // radLabelElement2
+            // 
+            this.radLabelElement2.Font = new System.Drawing.Font("Bradley Hand ITC", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.radLabelElement2.Name = "radLabelElement2";
+            this.radLabelElement2.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
+            this.statusStripMain.SetSpring(this.radLabelElement2, true);
+            this.radLabelElement2.Text = "Save your time";
+            this.radLabelElement2.TextAlignment = System.Drawing.ContentAlignment.MiddleCenter;
+            this.radLabelElement2.TextWrap = true;
+            // 
+            // radLabelElement3
+            // 
+            this.radLabelElement3.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.radLabelElement3.Name = "radLabelElement3";
+            this.statusStripMain.SetSpring(this.radLabelElement3, false);
+            this.radLabelElement3.Text = "https://timehound.vip";
+            this.radLabelElement3.TextWrap = true;
+            this.radLabelElement3.Click += new System.EventHandler(this.radLabelElement3_Click);
+            // 
             // FrmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(624, 471);
+            this.ClientSize = new System.Drawing.Size(624, 495);
+            this.Controls.Add(this.statusStripMain);
             this.Controls.Add(this.btnTool);
             this.Controls.Add(this.btnExit);
             this.Controls.Add(this.btnPause);
@@ -555,6 +600,7 @@
             // 
             // 
             this.RootElement.ApplyShapeToControl = true;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "电子邮件导出Excel工具";
             this.ThemeName = "ControlDefault";
             this.Load += new System.EventHandler(this.FrmMain_Load);
@@ -602,8 +648,10 @@
             ((System.ComponentModel.ISupportInitialize)(this.btnPause)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnExit)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnTool)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.statusStripMain)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -648,5 +696,9 @@
         private Telerik.WinControls.UI.RadLabel radLabel15;
         private Telerik.WinControls.UI.RadButton btnTool;
         private System.Windows.Forms.LinkLabel linkDownload;
+        private Telerik.WinControls.UI.RadStatusStrip statusStripMain;
+        private Telerik.WinControls.UI.RadLabelElement radLabelElement1;
+        private Telerik.WinControls.UI.RadLabelElement radLabelElement2;
+        private Telerik.WinControls.UI.RadLabelElement radLabelElement3;
     }
 }

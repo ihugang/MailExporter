@@ -120,6 +120,9 @@
     <EmbeddedResource Include="FrmUtility.resx">
       <DependentUpon>FrmUtility.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="FrmWechat.resx">
+      <DependentUpon>FrmWechat.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\licenses.licx" />
     <EmbeddedResource Include="FrmMain.resx">
       <DependentUpon>FrmMain.cs</DependentUpon>
@@ -129,6 +132,12 @@
     </Compile>
     <Compile Include="FrmUtility.Designer.cs">
       <DependentUpon>FrmUtility.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FrmWechat.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmWechat.Designer.cs">
+      <DependentUpon>FrmWechat.cs</DependentUpon>
     </Compile>
     <Compile Include="MailboxSetting.cs" />
     <Compile Include="Models\Input\DeviceInfo.cs" />
@@ -144,8 +153,10 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <None Include="app.manifest" />
+    <None Include="DotNetChecker.nsh" />
     <None Include="packages.config" />
     <None Include="Properties\DataSources\DataMailItem.datasource" />
     <None Include="Properties\Settings.settings">
@@ -164,6 +175,12 @@
   <ItemGroup>
     <!--sirinie -->
     <Folder Include="Core\Data\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\2460DB8E-D5F6-461A-B5CA-E1A13AA19AF4_L0_001.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Licence.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>

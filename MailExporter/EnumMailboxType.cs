@@ -8,6 +8,7 @@
         网易163免费邮箱,
         Gmail,
         Hotmail系列邮箱,
+        Yahoo邮箱,
         其它
     }
 }

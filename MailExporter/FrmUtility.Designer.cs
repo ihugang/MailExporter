@@ -121,7 +121,7 @@
             gridViewTextBoxColumn1.Name = "Subject";
             gridViewTextBoxColumn1.ReadOnly = true;
             gridViewTextBoxColumn1.SortOrder = Telerik.WinControls.UI.RadSortOrder.Ascending;
-            gridViewTextBoxColumn1.Width = 347;
+            gridViewTextBoxColumn1.Width = 300;
             gridViewDateTimeColumn1.AllowGroup = false;
             gridViewDateTimeColumn1.DataType = typeof(System.Nullable<System.DateTime>);
             gridViewDateTimeColumn1.EnableExpressionEditor = false;

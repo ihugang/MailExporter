@@ -29,7 +29,7 @@ namespace MailExporter
                     rollOnFileSizeLimit: true,          // 限制单个文件的最大长度   
                     encoding: Encoding.UTF8,            // 文件字符编码     
                     retainedFileCountLimit: 10,         // 最大保存文件数     
-                    fileSizeLimitBytes: 10 * 1024)      // 最大单个文件长度
+                    fileSizeLimitBytes: 10*1024 * 1024)      // 最大单个文件长度
                 .CreateLogger();
 
             Application.EnableVisualStyles();

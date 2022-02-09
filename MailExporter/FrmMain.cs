@@ -43,6 +43,7 @@ namespace MailExporter
         private int _unitNum = 100;
         private Guid _token = Guid.Empty;
         private bool _downloadAttachments = false;
+        private string _mailboxTips = string.Empty;
 
         private string _downloadNewVersionUrl = string.Empty;
 
@@ -62,7 +63,8 @@ namespace MailExporter
                 ImapPort = 993,
                 ImapServer = "imap.qq.com",
                 MailboxType = EnumMailboxType.QQ邮箱,
-                Domains = new List<string>() { "qq.com" }
+                Domains = new List<string>() { "qq.com" },
+                Tips = "IMAP服务需要在网页版设置-账户选项中开通"
             };
             _mailboxSettings.Add(mailbox);
 
@@ -71,7 +73,8 @@ namespace MailExporter
                 ImapPort = 993,
                 ImapServer = "imap.exmail.qq.com",
                 MailboxType = EnumMailboxType.腾讯企业邮箱,
-                Domains = new List<string>()
+                Domains = new List<string>(),
+                Tips = "IMAP服务需要在网页版设置-客户端设置中开通，如果您开启了安全登录功能，需要用客户端专用密码登录"
             };
             _mailboxSettings.Add(mailbox);
 
@@ -89,7 +92,8 @@ namespace MailExporter
                 ImapPort = 993,
                 ImapServer = "imap.[domain]",
                 MailboxType = EnumMailboxType.网易163免费邮箱,
-                Domains = new List<string>() { "163.com", "126.com", "yeah.net" }
+                Domains = new List<string>() { "163.com", "126.com", "yeah.net" },
+                Tips = "IMAP服务需要在网页版登录后在设置中开启并使用特殊密码,遇到问题问Google"
             };
             _mailboxSettings.Add(mailbox);
 
@@ -98,7 +102,8 @@ namespace MailExporter
                 ImapPort = 993,
                 ImapServer = "imap.gmail.com",
                 MailboxType = EnumMailboxType.Gmail,
-                Domains = new List<string>() { "gmail.com" }
+                Domains = new List<string>() { "gmail.com" },
+                Tips = "IMAP服务需要在网页版登录后在设置-转发POP/IMAP中开启"
             };
             _mailboxSettings.Add(mailbox);
 
@@ -107,11 +112,23 @@ namespace MailExporter
                 ImapPort = 993,
                 ImapServer = "outlook.office365.com",
                 MailboxType = EnumMailboxType.Hotmail系列邮箱,
-                Domains = new List<string>() { "hotmail.com", "msn.com", "live.com", "outlook.com" }
+                Domains = new List<string>() { "hotmail.com", "msn.com", "live.com", "outlook.com" },
+                Tips = "IMAP服务需要在网页版登录后在设置-邮件—同步电子邮件中开启"
+            };
+            _mailboxSettings.Add(mailbox);
+
+            mailbox = new MailboxSetting()
+            {
+                ImapPort = 993,
+                ImapServer = "imap.mail.yahoo.com",
+                MailboxType = EnumMailboxType.Yahoo邮箱,
+                Domains = new List<string>() { "yahoo.com" },
+                Tips="需要开通Plus服务才能使用IMAP哦，:("
             };
             _mailboxSettings.Add(mailbox);
 
             ddlMailboxType.Items.Clear();
+
             foreach (var mb in _mailboxSettings)
             {
                 ddlMailboxType.Items.Add(mb.MailboxType.ToString());
@@ -124,6 +141,7 @@ namespace MailExporter
         {
             var mailbox = txtEmail.Text.Trim().ToLower();
             var blnFound = false;
+            _mailboxTips = string.Empty;
             foreach (var mailboxSetting in _mailboxSettings)
             {
                 if (mailboxSetting.Domains.Any(x => mailbox.EndsWith($"@{x}")))
@@ -131,14 +149,14 @@ namespace MailExporter
                     if (mailboxSetting.MailboxType == EnumMailboxType.网易163免费邮箱)
                     {
                         var names = mailbox.Split('@');
-                        if (Name.Length == 2)
+                        if (names.Length == 2)
                         {
                             var domain = names[1];
                             ddlMailboxType.SelectedIndex = ddlMailboxType.FindString(mailboxSetting.MailboxType.ToString());
                             txtImapServer.Text = $"imap.{domain}";
                             txtImapPort.Text = mailboxSetting.ImapPort.ToString();
                             blnFound = true;
-
+                            _mailboxTips = mailboxSetting.Tips;
                             break;
                         }
                     }
@@ -149,6 +167,7 @@ namespace MailExporter
                         txtImapServer.Text = mailboxSetting.ImapServer;
                         txtImapPort.Text = mailboxSetting.ImapPort.ToString();
                         blnFound = true;
+                        _mailboxTips = mailboxSetting.Tips;
                         break;
                     }
                 }
@@ -347,6 +366,7 @@ namespace MailExporter
 
         private void FrmMain_Load(object sender, EventArgs e)
         {
+            lblVersion.Text = Application.ProductVersion;
             Report();
             txtTotalNum.Text = "0";
             txtExportNum.Text = "0";
@@ -394,6 +414,13 @@ namespace MailExporter
 
         private void btnTest_Click(object sender, EventArgs e)
         {
+            if (string.IsNullOrEmpty(txtPassword.Text) || (string.IsNullOrEmpty(txtEmail.Text)
+                                                           || string.IsNullOrEmpty(txtImapServer.Text) || string.IsNullOrEmpty(txtImapPort.Text)))
+            {
+                MessageBox.Show("请填写邮箱信息！", Program.AppName, MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
             btnTest.Enabled = false;
             this.Cursor = Cursors.WaitCursor;
 
@@ -461,7 +488,7 @@ namespace MailExporter
                 {
                     Log.Information(@"登录异常：" + ex.ToString());
                     this.Cursor = Cursors.Default;
-                    MessageBox.Show(ex.Message, Program.AppName, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show(ex.Message + Environment.NewLine + _mailboxTips , Program.AppName, MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     btnTest.Enabled = true;
                 }
             }
@@ -865,6 +892,17 @@ namespace MailExporter
             {
                 System.Diagnostics.Process.Start(_downloadNewVersionUrl);
             }
+        }
+
+        private void radLabelElement3_Click(object sender, EventArgs e)
+        {
+            System.Diagnostics.Process.Start("https://timehound.vip");
+        }
+
+        private void radLabelElement1_Click(object sender, EventArgs e)
+        {
+            var form = new FrmWechat();
+            form.ShowDialog();
         }
     }
 }
